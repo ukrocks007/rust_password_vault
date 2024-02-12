@@ -3,6 +3,7 @@ use std::fs;
 use std::io::prelude::*;
 use std::io::ErrorKind;
 use std::io::Error;
+use clipboard::*;
 
 const SEPARATOR : &str = "=";
 
@@ -35,6 +36,7 @@ fn main() {
                     return;
                 }
             };
+            copy_to_clipboard(&password);
             println!("Password for {} is {}", identifier, password);
         } else {
             println!("Usage password_helper <identifier>\t\t - to get password for identifier");
@@ -43,6 +45,16 @@ fn main() {
             );
         }
     }
+}
+
+fn copy_to_clipboard(data: &str) {
+    match ClipboardContext::new() {   
+        Ok(mut c) => c.set_contents(data.to_owned()).unwrap(),
+        Err(e) => {
+            println!("Error creating clipboard context: {}", e);
+            return;
+        }
+    };
 }
 
 fn init() {
