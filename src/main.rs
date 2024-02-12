@@ -10,11 +10,11 @@ fn main() {
     init();
     let args = env::args().collect::<Vec<String>>();
     if args.len() <= 1 {
-        println!("Usage password_helper <identifier>\t\t - to get password for identifier");
+        println!("Usage \nPassword_helper <identifier>\t\t - to get password for identifier");
         println!(
-            "Usage password_helper <identifier> <password>\t - to set/update password for identifier"
+            "Password_helper <identifier> <password>\t - to set/update password for identifier"
         );
-        println!("Usage password_helper -d <identifier>\t - to delete identifier");
+        println!("Password_helper -d <identifier>\t\t - to delete identifier");
         return;
     } else if args.len() >= 2 {
         if args[1] == "-d" && args.len() == 3 {
