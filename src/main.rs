@@ -9,7 +9,7 @@ const SEPARATOR: &str = "=";
 
 fn main() {
     init();
-    let args = env::args().collect::<Vec<String>>();
+    let args: Vec<String> = env::args().collect();
     if args.len() <= 1 {
         println!("Usage \nPassword_helper <identifier>\t\t - to get password for identifier");
         println!(
