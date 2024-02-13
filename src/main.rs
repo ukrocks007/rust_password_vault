@@ -1,11 +1,11 @@
+use clipboard::*;
 use std::env;
 use std::fs;
 use std::io::prelude::*;
-use std::io::ErrorKind;
 use std::io::Error;
-use clipboard::*;
+use std::io::ErrorKind;
 
-const SEPARATOR : &str = "=";
+const SEPARATOR: &str = "=";
 
 fn main() {
     init();
@@ -48,7 +48,7 @@ fn main() {
 }
 
 fn copy_to_clipboard(data: &str) {
-    match ClipboardContext::new() {   
+    match ClipboardContext::new() {
         Ok(mut c) => c.set_contents(data.to_owned()).unwrap(),
         Err(e) => {
             println!("Error creating clipboard context: {}", e);
@@ -58,7 +58,11 @@ fn copy_to_clipboard(data: &str) {
 }
 
 fn init() {
-    let _ = match fs::OpenOptions::new().create(true).write(true).open("passwords.txt") {
+    let _ = match fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open("passwords.txt")
+    {
         Ok(_) => (),
         Err(e) => println!("Error creating file: {}", e),
     };
@@ -72,9 +76,12 @@ fn set_password(identifier: &str, password: &str) {
         }
         Err(_) => (),
     }
-    let mut file = fs::OpenOptions::new().append(true).open("passwords.txt").unwrap();
+    let mut file = fs::OpenOptions::new()
+        .append(true)
+        .open("passwords.txt")
+        .unwrap();
     println!("Password for {} set to {}", identifier, password);
-    match writeln!(file, "{}{}{}", identifier,SEPARATOR, password) {
+    match writeln!(file, "{}{}{}", identifier, SEPARATOR, password) {
         Ok(_) => (),
         Err(e) => println!("Error writing to file: {}", e),
     }
@@ -123,7 +130,7 @@ fn delete_password(identifier: &str) {
         let mut parts = line.split(SEPARATOR);
         if parts.clone().count() == 1 {
             continue;
-        } 
+        }
         let key = parts.next().unwrap();
         let value = parts.next().unwrap();
         if key == identifier {
@@ -132,7 +139,7 @@ fn delete_password(identifier: &str) {
             new_contents.push_str(&format!("{}{}{}\n", key, SEPARATOR, value));
         }
     }
-    
+
     match fs::write("passwords.txt", new_contents.as_bytes()) {
         Ok(_) => (),
         Err(e) => println!("Error writing to file: {}", e),
@@ -166,5 +173,8 @@ fn get_password(identifier: &str) -> Result<String, Box<dyn std::error::Error>> 
             index += 1;
         }
     }
-    Err(Box::new(Error::new(ErrorKind::NotFound, "No password found")))
+    Err(Box::new(Error::new(
+        ErrorKind::NotFound,
+        "No password found",
+    )))
 }
